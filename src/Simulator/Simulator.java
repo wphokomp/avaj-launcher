@@ -1,23 +1,23 @@
-package za.co.wethinkcode;
+package Simulator;
 
-import za.co.wethinkcode.aircrafts.AircraftFactory;
-import za.co.wethinkcode.aircrafts.Balloon;
-import za.co.wethinkcode.interfaces.IFlyable;
+import Aircrafts.AircraftFactory;
+import Interfaces.IFlyable;
+import Towers.WeatherTower;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Simulator {
-
     private static WeatherTower weatherTower;
     private static List<IFlyable> flyableList = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         try {
-//            File file = new File("/goinfre/wphokomp/Downloads/scenario.txt");
-
-            BufferedReader reader = new BufferedReader(new FileReader("/goinfre/wphokomp/Downloads/scenario.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("/home/william/Documents/projects/avaj-launcher/scenario.txt"));
 
             String line = reader.readLine();
             if (line != null) {
@@ -37,14 +37,16 @@ public class Simulator {
                         System.out.println("Invalid file format {Type Name Longitude Latitude Height}");
                     }
                 }
-
                 for (IFlyable flyable : flyableList) {
                     flyable.registerTower(weatherTower);
+
                 }
-//                for (int i = 1; i <= simulation; i++) {
-////                    String simulationWrite = "Simulation: " + i + "\n";
-//                    weatherTower.changeWeather();
-//                }
+                for (int i = 1; i <= simulation; i++) {
+                    String simulationWrite = "Simulation: " + i;
+//                    weatherTower.writeToFile("write", simulationWrite);
+                    System.out.println(simulationWrite);
+                    weatherTower.changeWeather();
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found exception " + args[0]);
@@ -53,7 +55,7 @@ public class Simulator {
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("File specification error");
         } catch (Exception e) {
-            System.out.println("Unrecognised symbols in file " + e);
+            System.out.println("Unrecognised symbols in file" + e);
         }
     }
 }
